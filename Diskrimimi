@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int main(){
+    system("chcp 1251");
+    int a,b,c;
+    float x;
+    while (1){
+    //ВВод
+    puts("\n");
+    printf("Введите коэфициент a: ");
+    scanf("%d",&a);
+    printf("Введите коэфициент b: ");
+    scanf("%d",&b);
+    printf("Введите коэфициент c: ");
+    scanf("%d",&c);
+
+    if (a==0){
+        if(b==0){
+            //все 0 кроме с
+            if (c == 0){
+                printf("Х - любое");
+            }
+            else{
+                printf("Х не существует");
+            }
+        }
+        //Линейное
+        else{
+            x = (float) -c/b;
+            printf("X = %.3f",x);
+        }
+    }
+
+    else{
+        float D = b*b - 4*a*c;
+        if (D<0){
+            printf("Х не существует");
+        }
+        else{
+            x = (-b + sqrt(D))/(2*a);
+            printf("X = %.3f",x);
+            puts("");
+            float x2 = (-b-sqrt(D))/(2*a);
+            if (x != x2){
+                printf("X = %.3f",x2);
+            }
+        }
+        }
+    }
+    return 0;
+}
