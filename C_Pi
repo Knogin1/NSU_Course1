@@ -1,0 +1,43 @@
+//Не помню работате или гнет
+
+#include <stdio.h>
+#include <stdlib.h>
+
+double Mid(double a, double b){
+    double c = (a+b)/2;
+    return c;
+}
+
+int main(){
+    system("chcp 1251");
+
+    while(1){
+    int a;
+    double pi = 4;
+    double g;
+    double p = 4;
+    double boof = 0;
+    double boof_pi = 0;
+    int s = -1;
+    int i = 3;
+
+    printf("\nВВедите точность: ");
+    scanf("%d",&a);
+
+    while(fabs(boof_pi-pi) >= pow(10,-(a+2))){
+
+        boof = p;
+        g = s*i;
+        p += 4/(g);
+        boof_pi = pi;
+
+        pi = Mid(p,boof);
+
+        i += 2;
+        s=s*-1;
+    };
+
+    printf("%.*lf\n",a,pi);
+
+    }
+}
