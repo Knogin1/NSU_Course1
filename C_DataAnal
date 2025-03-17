@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 100
+
+int min(int Arr[],int lens){
+    int M = Arr[0];
+    for (int i = 1; i < lens; i++){
+        if (M>Arr[i]){
+            M = Arr[i];
+        }
+    }
+    return M;
+}
+
+int max(int Arr[],int lens){
+    int M = *Arr;
+    for (int i = 1; i <= lens; i++){
+        if (M<*Arr){
+            M = *Arr;
+        }
+        Arr +=1;
+    }
+    return M;
+}
+
+float mid(int Arr[], int lens){
+    float S = 0;
+    for (int i = 0; i < lens; i++){
+        S += Arr[i];
+    }
+    S = S/lens;
+    return S;
+}
+
+float d(int Arr[], int lens){
+    float M = mid(Arr,lens);
+    float S = 0;
+    for (int i = 0; i < lens; i++){
+        S += (Arr[i]-M)*(Arr[i]-M);
+    }
+    S = S/(lens-1);
+    S = sqrt(S);
+    return S;
+}
+
+int main() {
+    system("chcp 1251");
+    int N;
+
+    printf("\nРазмер: ");
+    scanf("%d",&N);
+
+    if (N > MAX){
+        N = MAX;
+    }
+
+    int A[N];
+
+    printf("\nВвод чисел: \n");
+
+    for (int i = 0; i < N; i++){
+        scanf("%d",&A[i]);
+
+    }
+
+    puts("\n");
+    printf("Массив: ");
+
+    for (int i = 0; i < N; i++){
+        printf("%d ",A[i]);
+    }
+
+    puts("\n");
+    printf("MIN: %d\n",min(A,N));
+    printf("MAX: %d\n",max(A,N));
+    printf("MID: %f\n",mid(A,N));
+    printf("D: %f\n",d(A,N));
+}
