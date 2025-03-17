@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+float Func(float x){
+    float f;
+    f = sin(x);
+    return f;
+}
+
+int main(){
+    system("chcp 1251");
+    float a,b,d, n, f1, f2, x, s, I, IS, x1;
+
+    printf("От: ");
+    scanf("%f",&a);
+    printf("До: ");
+    scanf("%f",&b);
+    printf("Кол-во разбиений: ");
+    scanf("%f",&n);
+
+    d = (b-a)/n;
+    x = a;
+    I = 0;
+
+    printf("\nТрапеции\n");
+    for (x; x<=b; x+=d){
+        f1 = Func(x);
+        //printf("f1: %f \n",f1);
+        f2 = Func(x+d);
+        //printf("f2: %f \n",f2);
+        s = d*(f1+f2)/2;
+        I+=s;
+       // puts("\n");
+    }
+    printf("Площадь: %f",I);
+
+    printf("\nПараболы\n");
+
+    x = a;
+    IS=0;
+    x1 = a+d;
+    s = 0;
+
+    for (int i=0; i<=n-1; i++) {
+        s += Func(x) + 4*Func(x1) + Func(x1+d);
+        x += d;
+        x1 += d;
+    }
+    IS = (d/6)*s;
+    printf("Площадь: %f",IS);
+    float t= I-IS;
+    printf("\nТочность: %f", t);
+
+    return 0;
+}
