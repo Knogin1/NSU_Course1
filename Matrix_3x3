@@ -18,6 +18,7 @@ void Full(float M[3][3]){
 }
 
 void MPrint (float M[3][3]){
+    puts("\n");
     for (int i = 0; i < 3; i++){
         puts("");
         for(int j = 0; j < 3; j++){
@@ -64,6 +65,27 @@ float Det(float A[3][3]){
     return d;
 }
 
+void Rev(float A[3][3], float C[3][3]){
+    float D = Det(A);
+    float B[3][3];
+    B[0][0] = (A[1][1]*A[2][2] - A[1][2]*A[2][1]);
+    B[0][1] = -(A[1][0]*A[2][2] - A[1][2]*A[2][0]);
+    B[0][2] = (A[1][0]*A[2][1] - A[1][1]*A[2][0]);
+    B[1][0] = -(A[0][1]*A[2][2] - A[0][2]*A[2][1]);
+    B[1][1] = (A[0][0]*A[2][2] - A[0][2]*A[2][0]);
+    B[1][2] = -(A[0][0]*A[2][1] - A[0][1]*A[2][0]);
+    B[2][0] = (A[0][1]*A[1][2] - A[0][2]*A[1][1]);
+    B[2][1] = -(A[0][0]*A[1][2] - A[0][2]*A[1][0]);
+    B[2][2] = (A[0][0]*A[1][1] - A[0][1]*A[1][0]);
+
+    Umn(A,B,C);
+    for (int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            C[i][j] = C[i][j] / D;
+        }
+    }
+}
+
 
 int main(){
     struct Matrix A;
@@ -84,6 +106,10 @@ int main(){
 
     printf("\n detA = %f",Det(A.data));
 
+    struct Matrix E;
+    Rev(B.data,E.data);
+    MPrint(E.data);
 
     return 0;
 }
+
