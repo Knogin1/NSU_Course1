@@ -1,0 +1,89 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Matrix {
+    float data[3][3];
+};
+
+void Full(float M[3][3]){
+    printf("INPUT: \n");
+    float a;
+    for (int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            scanf("%f",&a);
+            M[i][j] = a;
+        }
+    }
+    puts("");
+}
+
+void MPrint (float M[3][3]){
+    for (int i = 0; i < 3; i++){
+        puts("");
+        for(int j = 0; j < 3; j++){
+            printf("%.2f  ", M[i][j]);
+        }
+    }
+    puts("\n");
+}
+
+void Sum(float A[3][3], float B[3][3], float C[3][3]){
+    for (int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            C[i][j] = A[i][j] + B[i][j];
+        }
+    }
+    puts("\n");
+}
+
+void Umn(float A[3][3], float B[3][3], float C[3][3]){
+    for (int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            C[i][j] = 0;
+        }
+    }
+
+    for(int i = 0; i <3; i++){
+        for(int j = 0; j < 3; j++){
+            for(int k = 0; k < 3; k++){
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+    puts("\n");
+}
+
+float Det(float A[3][3]){
+    float d,d1,d2,d3;
+
+    d1 = A[1][1]*A[2][2] - A[1][2]*A[2][1];
+    d2 = A[1][0]*A[2][2] - A[1][2]*A[2][0];
+    d3 = A[1][0]*A[2][1] - A[1][1]*A[2][0];
+
+    d = A[0][0]*d1 - A[0][1]*d2 + A[0][2]*d3;
+    return d;
+}
+
+
+int main(){
+    struct Matrix A;
+    Full(A.data);
+    MPrint(A.data);
+
+    struct Matrix B;
+    Full(B.data);
+    MPrint(B.data);
+
+    struct Matrix C;
+    Sum(A.data,B.data,C.data);
+    MPrint(C.data);
+
+    struct Matrix D;
+    Umn(A.data,B.data,D.data);
+    MPrint(D.data);
+
+    printf("\n detA = %f",Det(A.data));
+
+
+    return 0;
+}
