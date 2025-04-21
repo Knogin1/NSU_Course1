@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int min(int *Arr,int lens){
+    int M = Arr[0];
+    for (int i = 1; i < lens; i++){
+        if (M>Arr[i]){
+            M = Arr[i];
+        }
+    }
+    return M;
+}
+
+int Max(int *Arr, int L){
+    int M = Arr[0];
+    for (int i = 1; i < L; i++){
+        if (M<Arr[i]){
+            M = Arr[i];
+        }
+    }
+    return(M);
+}
+
+float mid(int *Arr, int lens){
+    /*
+    if (min(Arr,lens) == Max(Arr,lens)){
+        return Max(Arr,lens);
+    }
+    */
+    float S = 0;
+    for (int i = 0; i < lens; i++){
+        S += Arr[i]/lens;
+    }
+    S = S;
+    return S;
+}
+
+float d(int *Arr, int lens){
+    float M = mid(Arr,lens);
+    float S = 0;
+    for (int i = 0; i < lens; i++){
+        S += (Arr[i]-M)*(Arr[i]-M);
+    }
+    S = S/(lens-1);
+    S = sqrt(S);
+    return S;
+}
+
+int main(){
+    int N;
+    printf("Size: ");
+    scanf("%d",&N);
+    puts("\n");
+
+    int *A;
+    A = (int*)malloc(N * sizeof(int));
+
+    for (int i = 0; i < N; i++){
+        //printf("a[%d] = ", i);
+        //scanf("%d", &A[i]);
+        A[i] = 9;
+    }
+
+    puts("\n");
+
+    //for (int i = 0; i < N; i++){
+    //    printf("%d ", A[i]);
+   // }
+
+    puts("\n");
+
+    printf("Min = %d\n",min(A,N));
+    printf("Max = %d\n",Max(A,N));
+    printf("Mid = %f\n", mid(A,N));
+    printf("D = %f\n", d(A,N));
+
+    free(A);
+    return 0;
+}
