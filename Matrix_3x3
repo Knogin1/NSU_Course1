@@ -78,24 +78,34 @@ void Rev(float A[3][3], float C[3][3]){
     B[2][1] = -(A[0][0]*A[1][2] - A[0][2]*A[1][0]);
     B[2][2] = (A[0][0]*A[1][1] - A[0][1]*A[1][0]);
 
-    Umn(A,B,C);
-    for (int i = 0; i < 3; i++){
-        for(int j = 0; j < 3; j++){
-            C[i][j] = C[i][j] / D;
+    for(int j = 0; j<3; j++){
+        for(int i = 0; i<3; i++){
+            C[i][j] = B[j][i];
         }
     }
+
+    for (int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            C[i][j] = C[i][j]/D;
+        }
+    }
+
+
 }
 
 
 int main(){
+    /*
     struct Matrix A;
     Full(A.data);
     MPrint(A.data);
+    */
 
     struct Matrix B;
     Full(B.data);
     MPrint(B.data);
 
+    /*
     struct Matrix C;
     Sum(A.data,B.data,C.data);
     MPrint(C.data);
@@ -105,6 +115,7 @@ int main(){
     MPrint(D.data);
 
     printf("\n detA = %f",Det(A.data));
+    */
 
     struct Matrix E;
     Rev(B.data,E.data);
@@ -112,4 +123,3 @@ int main(){
 
     return 0;
 }
-
