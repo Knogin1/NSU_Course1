@@ -1,0 +1,97 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+// Функции сравнения
+typedef int (*CompareFunc)(int, int);
+
+int compareAsc(int a, int b) {
+    return a > b;
+}
+
+int compareDesc(int a, int b) {
+    return a < b;
+}
+
+int compareAbs(int a, int b) {
+    return abs(a) > abs(b);
+}
+
+// Функция обмена элементов
+void replace(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Единая функция сортировки пузырьком
+void bubbleSort(int *arr, int size, CompareFunc compare) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (compare(arr[j], arr[j + 1])) {
+                replace(&arr[j], &arr[j + 1]);
+            }
+        }
+    }
+}
+
+int main() {
+    int size, sortType;
+    int *arr;
+
+    // Ввод размера массива
+    printf("Введите размер массива: ");
+    scanf("%d", &size);
+    
+    // Выделение памяти
+    arr = (int*)malloc(size * sizeof(int));
+    if (arr == NULL) {
+        printf("Ошибка выделения памяти\n");
+        return 1;
+    }
+
+    // Ввод элементов массива
+    printf("Введите элементы массива:\n");
+    for (int i = 0; i < size; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    // Выбор типа сортировки
+    printf("Выберите тип сортировки:\n");
+    printf("1 - по возрастанию\n");
+    printf("2 - по убыванию\n");
+    printf("3 - по абсолютному значению\n");
+    scanf("%d", &sortType);
+
+    // Определение функции сравнения
+    CompareFunc compare;
+    switch (sortType) {
+        case 1:
+            compare = compareAsc;
+            break;
+        case 2:
+            compare = compareDesc;
+            break;
+        case 3:
+            compare = compareAbs;
+            break;
+        default:
+            printf("Неверный выбор\n");
+            free(arr);
+            return 1;
+    }
+
+    // Сортировка
+    bubbleSort(arr, size, compare);
+
+    // Вывод отсортированного массива
+    printf("Отсортированный массив:\n");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    // Освобождение памяти
+    free(arr);
+    return 0;
+}
