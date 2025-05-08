@@ -1,0 +1,175 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
+
+typedef struct {
+    int N;
+    int M;
+    double *data;
+} Matrix;
+
+// Создание матрицы
+Matrix* MakeMatrix(int N, int M) {
+    Matrix *mat = (Matrix*)malloc(sizeof(Matrix));
+    mat->N = N;
+    mat->M = M;
+    mat->data = (double*)malloc(N * M * sizeof(double));
+    return mat;
+}
+
+// Освобождение памяти
+void FreeMatrix(Matrix *mat) {
+    free(mat->data);
+    free(mat);
+}
+
+// Получение элемента
+double GetEl(Matrix *mat, int i, int j) {
+    return mat->data[i * mat->N + j];
+}
+
+// Установка элемента
+void SetEl(Matrix *mat, int i, int j, double value) {
+    mat->data[i * mat->N + j] = value;
+}
+
+// Печать матрицы
+void PrintMatrix(Matrix *mat) {
+    for (int i = 0; i < mat->M; i++) {
+        for (int j = 0; j < mat->N; j++) {
+            printf("%.3lf ", GetEl(mat, i, j));
+        }
+        printf("\n");
+    }
+}
+
+// Сумма матриц
+Matrix* Sum(Matrix *a, Matrix *b) {
+    //if (a->Y != b->Y || a->X != b->X) return NULL;
+    Matrix *result = MakeMatrix(a->M, a->N);
+    for (int i = 0; i < a->M * a->N; i++) {
+        result->data[i] = a->data[i] + b->data[i];
+    }
+    return result;
+}
+
+// Произведение матриц
+Matrix* Umn(Matrix *a, Matrix *b) {
+    //if (a->X != b->Y) return NULL;
+    Matrix *result = MakeMatrix(a->M, b->N);
+    for (int i = 0; i < a->M; i++) {
+        for (int j = 0; j < b->N; j++) {
+            double sum = 0;
+            for (int k = 0; k < a->N; k++) {
+                sum += GetEl(a, i, k) * GetEl(b, k, j);
+            }
+            SetEl(result, i, j, sum);
+        }
+    }
+    return result;
+}
+
+// Рекурсивное вычисление определителя
+double Det(Matrix *mat) {
+    //if (mat->M != mat->N) return NAN;
+    int n = mat->M;
+    if (n == 1) return GetEl(mat, 0, 0);
+
+    double det = 0;
+    int sign = 1;
+    for (int j = 0; j < n; j++) {
+        Matrix *minor = MakeMatrix(n-1, n-1);
+        int minor_M = 0;
+        for (int M = 1; M < n; M++) {
+            int minor_N = 0;
+            for (int N = 0; N < n; N++) {
+                if (N == j) continue;
+                SetEl(minor, minor_M, minor_N, GetEl(mat, M, N));
+                minor_N++;
+            }
+            minor_M++;
+        }
+        det += sign * GetEl(mat, 0, j) * Det(minor);
+        sign *= -1;
+        FreeMatrix(minor);
+    }
+    return det;
+}
+
+
+// Обратная матрица
+Matrix* Inverse (Matrix *mat) {
+    if (mat->M != mat->N) return NULL;
+    double det = Det(mat);
+    if (fabs(det) == 0) return 0; // Проверка на вырожденность
+
+    int n = mat->M;
+    Matrix *inv = MakeMatrix(n, n);
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            Matrix *minor = MakeMatrix(n-1, n-1);
+            int minor_M = 0;
+            for (int M = 0; M < n; M++) {
+                if (M == i) continue;
+                int minor_N = 0;
+                for (int N = 0; N < n; N++) {
+                    if (N == j) continue;
+                    SetEl(minor, minor_M, minor_N, GetEl(mat, M, N));
+                    minor_N++;
+                }
+                minor_M++;
+            }
+            double cofactor = pow(-1, i + j) * Det(minor);
+            SetEl(inv, j, i, cofactor / det); // Транспонирование
+            FreeMatrix(minor);
+        }
+    }
+    return inv;
+}
+
+// Заполнение случайными числами
+void FillRandom(Matrix *mat) {
+    //srand(time(NULL));
+    for (int i = 0; i < mat->M * mat->N; i++) {
+        mat->data[i] = (double)(rand()) / RAND_MAX * (10.0 - 5.0)+5.0; // от -5 до 5
+    }
+}
+
+// Пример использования
+int main() {
+    srand(time(NULL));
+    system("chcp 1251");
+
+    Matrix *mat = MakeMatrix(4, 4);
+    FillRandom(mat);
+    printf("Исходная матрица:\n");
+    PrintMatrix(mat);
+
+    printf("\nОпределитель: %.3lf\n", Det(mat));
+
+    Matrix *inv = Inverse(mat);
+    if (inv) {
+        printf("\nОбратная матрица:\n");
+        PrintMatrix(inv);
+        FreeMatrix(inv);
+    } else {
+        printf("\nОбратная матрица не существует\n");
+    }
+
+    puts("\n");
+
+    Matrix *mat1 = MakeMatrix(4, 4);
+    FillRandom(mat1);
+    printf("Исходная матрица 2:\n");
+    PrintMatrix(mat1);
+
+    puts("\n");
+    PrintMatrix(Umn(mat,mat1));
+    puts("\n");
+    PrintMatrix(Sum(mat,mat1));
+
+    FreeMatrix(mat);
+    return 0;
+}
